@@ -6,7 +6,7 @@ from decimal import Decimal
 from typing import List, Tuple
 from simplitax.models import (
     DadosEmpresa, DadosFinanceiros, ResultadoCalculoTributario,
-    CenarioDistribuicao, RiscoFiscal
+    CenarioDistribuicao, RiscoFiscal, RegimeTributario
 )
 from simplitax.calculators import CalculadoraTributos, CalculadoraProLabore
 
@@ -215,7 +215,7 @@ class AnalisadorRiscosFiscais:
                 ))
         
         # Risco 5: Limite do Simples Nacional
-        if self.empresa.regime_tributario == "simples_nacional":
+        if self.empresa.regime_tributario == RegimeTributario.SIMPLES_NACIONAL:
             limite_anual = Decimal('4800000')  # R$ 4,8 milhões
             if dados_financeiros.receita_bruta * 12 > limite_anual * Decimal('0.9'):
                 riscos.append(RiscoFiscal(
