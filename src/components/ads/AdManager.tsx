@@ -21,15 +21,30 @@ const ADMOB_IDS = {
 }
 
 // ============================================================================
-// 🎯 Banner Ad Component
+// � AdSense IDs (Web) - Configurar após aprovação
+// ============================================================================
+
+const ADSENSE_IDS = {
+  client: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || '',
+  bannerSlot: process.env.NEXT_PUBLIC_ADSENSE_BANNER_SLOT || '',
+}
+
+// Detecta se está rodando em mobile app ou web
+const isMobileApp = typeof window !== 'undefined' && 
+  (window.navigator.userAgent.includes('wv') || // WebView Android
+   (window as any).ReactNativeWebView); // React Native
+
+// ============================================================================
+// 🎯 Banner Ad Component (AdSense para Web)
 // ============================================================================
 
 /**
- * Banner fixo no rodapé do app (apenas para usuários free)
+ * Banner fixo no rodapé (AdSense para web, AdMob para mobile)
  */
 export function AdBanner() {
   const { isPremium } = useSubscription()
   const [showAd, setShowAd] = useState(false)
+  const [adSenseLoaded, setAdSenseLoaded] = useState(false)
 
   useEffect(() => {
     // Só mostrar em produção e para usuários free
@@ -38,21 +53,64 @@ export function AdBanner() {
     
     if (!isPremium && (isProduction || showAdsInDev)) {
       setShowAd(true)
+      
+      // Carregar AdSense apenas na web
+      if (!isMobileApp && ADSENSE_IDS.client && typeof window !== 'undefined') {
+        const script = document.createElement('script')
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_IDS.client}`
+        script.async = true
+        script.crossOrigin = 'anonymous'
+        script.onload = () => setAdSenseLoaded(true)
+        document.head.appendChild(script)
+        
+        return () => {
+          if (document.head.contains(script)) {
+            document.head.removeChild(script)
+          }
+        }
+      }
     }
   }, [isPremium])
+
+  // Inicializar anúncio AdSense quando carregar
+  useEffect(() => {
+    if (adSenseLoaded && !isMobileApp && ADSENSE_IDS.bannerSlot) {
+      try {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
+      } catch (e) {
+        console.error('AdSense error:', e)
+      }
+    }
+  }, [adSenseLoaded])
 
   if (!showAd) return null
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-t border-gray-700">
       <div className="container mx-auto">
-        {/* Em produção mobile: usar react-native-google-mobile-ads */}
-        {/* <BannerAd unitId={ADMOB_IDS.banner} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} /> */}
-        
-        {/* Mock web */}
-        <div className="flex items-center justify-center h-12 bg-gradient-to-r from-gray-800 to-gray-700 text-white text-xs">
-          <span className="opacity-60">📢 Anúncio • Atualize para Premium e remova</span>
-        </div>
+        {/* Web: AdSense */}
+        {!isMobileApp && ADSENSE_IDS.client && ADSENSE_IDS.bannerSlot ? (
+          <div className="flex items-center justify-center min-h-[60px] py-2">
+            <ins
+              className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-client={ADSENSE_IDS.client}
+              data-ad-slot={ADSENSE_IDS.bannerSlot}
+              data-ad-format="horizontal"
+              data-full-width-responsive="true"
+            />
+          </div>
+        ) : isMobileApp ? (
+          // Mobile: AdMob (implementar com react-native-google-mobile-ads)
+          <div className="flex items-center justify-center h-12 bg-gradient-to-r from-gray-800 to-gray-700 text-white text-xs">
+            <span className="opacity-60">📢 AdMob Banner • Atualize para Premium</span>
+          </div>
+        ) : (
+          // Fallback: Mock enquanto AdSense não está configurado
+          <div className="flex items-center justify-center h-12 bg-gradient-to-r from-gray-800 to-gray-700 text-white text-xs">
+            <span className="opacity-60">📢 Configure ADSENSE_CLIENT_ID • Atualize para Premium</span>
+          </div>
+        )}
       </div>
     </div>
   )
