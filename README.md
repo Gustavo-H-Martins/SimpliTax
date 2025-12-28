@@ -1,72 +1,205 @@
-# 📑 Master Plan: SimpliTax 2026
+# 🧮 SimpliTax 2026
 
-**Persona Responsável:** LMartins (Product Manager)
+**Transforme a complexidade da Reforma Tributária de 2026 em uma experiência fluida e lucrativa para contadores.**
 
-**Objetivo:** Transformar a complexidade da Reforma Tributária de 2026 em uma experiência fluida e lucrativa para contadores.
-
----
-
-## 🎯 Visão Geral do Produto
-
-O **SimpliTax 2026** é uma ferramenta de suporte à decisão. Ele não é apenas um repositório de dados, mas um motor que processa a realidade financeira da empresa e sugere as melhores rotas para:
-
-1. **Minimizar a nova taxação de dividendos.**
-2. **Equilibrar o Fator R** para manter empresas no Anexo III do Simples Nacional.
-3. **Garantir conformidade** na conciliação contábil para evitar multas.
+![SimpliTax Logo](./public/logo.svg)
 
 ---
 
-## 🛠️ Arquitetura de Construção (Etapas)
+## 🎯 Visão Geral
 
-### 1. Definição do "Core" de Inteligência (Engine)
+O **SimpliTax 2026** é uma ferramenta de suporte à decisão que processa a realidade financeira da empresa e sugere as melhores rotas para:
 
-Antes da interface, precisamos das fórmulas. Esta etapa foca em traduzir a lei para algoritmos.
-
-* **Módulo Fiscal 2026:** Codificar as alíquotas da reforma e as regras de transição.
-* **Calculadora de Ponto de Equilíbrio (Break-even):** Onde o sistema calcula se vale mais a pena pagar Pró-labore (com IR e INSS) ou Dividendos (com a nova taxa).
-* **Otimização:** Usar funções puras para que o cálculo seja instantâneo enquanto o usuário digita.
-
-### 2. Estrutura de Dados e Ingestão
-
-O sistema precisa "ler" o que já existe.
-
-* **Mapping de Planilhas:** Criar um conversor universal para que o contador suba qualquer extrato ou balancete.
-* **Normalização:** Garantir que "Receita Bruta" em um sistema seja lida da mesma forma no SimpliTax.
-* **Otimização:** Implementar um "Auto-mapper" que sugere as colunas certas usando padrões comuns de mercado.
-
-### 3. Dashboard de Tomada de Decisão (UI/UX)
-
-Aqui aplicamos o tom amigável. Nada de tabelas cinzas e chatas.
-
-* **Semáforo de Risco:** Um componente visual que mostra: Verde (Seguro), Amarelo (Atenção ao Fator R), Vermelho (Perdendo dinheiro/Risco fiscal).
-* **Simulador "What-If":** Uma barra deslizante onde o usuário altera o valor do Pró-labore e vê o impacto no lucro líquido final em tempo real.
-
-### 4. Módulo de Conciliação Inteligente
-
-* **Check de Integridade:** O sistema cruza o saldo bancário com as provisões de impostos da reforma.
-* **Alerta de Divergência:** Se o dividendo distribuído não bate com o lucro apurado após a nova taxação, o sistema gera um alerta "Linguagem Humana" (ex: "Ops! Você está distribuindo mais do que o permitido sem imposto").
+1. **Minimizar a nova taxação de dividendos**
+2. **Equilibrar o Fator R** para manter empresas no Anexo III do Simples Nacional
+3. **Garantir conformidade** na conciliação contábil para evitar multas
 
 ---
 
-## 💡 Insights e Otimizações da LMartins (Diferenciais)
+## 🚀 Getting Started
 
-> **Dica de Ouro 1: O "Botão de Pânico" do Fator R**
-> Implementar um monitor que olha os últimos 12 meses e avisa: "Se você não aumentar sua folha em R$ 500 este mês, seus impostos vão subir 15% em 2026". Isso é valor puro para o cliente!
+### Pré-requisitos
 
-> **Dica de Ouro 2: Relatórios "Prontos para o Cliente"**
-> O contador não quer só o dado, ele quer explicar para o cliente dele (o dono da empresa). O SimpliTax deve gerar um PDF ou link com uma explicação ultra simples: "Este mês economizamos R$ X agindo de tal forma".
+- Node.js 18+ 
+- npm ou yarn
 
-> **Dica de Ouro 3: Modo "Simulação de Reforma"**
-> Permitir que o usuário use dados de 2025 para ver como seria a vida dele se a reforma já estivesse valendo. Isso ajuda a vender o software *antes* de 2026 chegar.
+### Instalação
+
+```bash
+# Instalar dependências
+npm install
+
+# Rodar em modo desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+npm start
+```
+
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ---
 
-## 🤖 Guia para VibeCoding (Instruções para o Copilot)
+## 📁 Estrutura do Projeto
 
-Ao usar este arquivo no VS Code com o Copilot, use prompts como:
-
-* *"Com base no Master Plan do SimpliTax, crie uma função em TypeScript que calcule o equilíbrio entre Pró-labore e Dividendos seguindo as regras de 2026."*
-* *"Gere um componente de Dashboard (React + Tailwind) que siga a ideia do 'Semáforo de Risco' da LMartins."*
-* *"Crie um parser de CSV que identifique automaticamente colunas de Receita e Despesa para o módulo de ingestão."*
+```
+simplitax-2026/
+├── .github/              # Workflows de deploy
+│   └── copilot-instructions.md  # Master Plan do produto
+├── src/
+│   ├── app/              # Rotas e Páginas (Next.js App Router)
+│   │   ├── dashboard/    # Visão principal do contador
+│   │   ├── simulador/    # Simulador What-If
+│   │   └── layout.tsx
+│   ├── components/       # Componentes Visuais
+│   │   ├── Semaforo.tsx  # Indicador visual de risco fiscal
+│   │   └── GraficoComparativo.tsx
+│   ├── engine/           # Core de Inteligência (Cálculos Tributários)
+│   │   ├── regras2026.ts # Alíquotas da reforma
+│   │   ├── calculador.ts # Lógica de otimização (compatibilidade)
+│   │   ├── otimizador.ts # 💎 A EQUAÇÃO DE OURO! (novo em v1.0)
+│   │   └── factorR.ts    # Monitor de folha de pagamento
+│   ├── hooks/            # Hooks reutilizáveis
+│   └── types/            # Interfaces TypeScript
+├── context/              # Contexto global
+├── docs/                 # 📚 Documentação
+│   └── VIBE_CODING.md    # Guia de prompts para Copilot
+└── public/               # Assets estáticos
+```
 
 ---
+
+## 💎 A EQUAÇÃO DE OURO (NOVIDADE!)
+
+O coração do SimpliTax 2026 é o **Otimizador Tributário** em [src/engine/otimizador.ts](src/engine/otimizador.ts).
+
+### Como Funciona?
+
+A Equação analisa **DOIS cenários** e mostra qual deixa mais dinheiro no seu bolso:
+
+**🎯 Cenário 1: Manter Fator R**
+- Aumenta Pró-labore para 28% da receita
+- Permanece no Anexo III (impostos mais baixos)
+- Paga mais INSS e IR no Pró-labore
+
+**💰 Cenário 2: Dividendos Taxados**
+- Mantém Pró-labore atual
+- Vai para Anexo V (Simples mais caro)
+- Paga 15% nos dividendos
+
+### Exemplo de Uso
+
+```typescript
+import { calcularOtimizacao } from '@/engine/otimizador'
+
+const resultado = calcularOtimizacao({
+  receitaBruta: 100000,
+  despesasOperacionais: 30000,
+  folhaAtual: 15000,
+  prolaboreAtual: 5000
+})
+
+console.log(resultado.recomendacao)
+// "💼 AUMENTE O PRÓ-LABORE! Você economiza R$ 84.000/ano!"
+
+console.log(resultado.economiaAnual) // 84000
+console.log(resultado.acoes) // ["Aumentar Pró-labore em R$ 13000", ...]
+```
+
+Veja mais exemplos em [src/engine/exemplos.ts](src/engine/exemplos.ts)!
+
+---
+
+## 💡 Funcionalidades Principais
+
+### 1. **Semáforo de Risco Fiscal**
+Indicador visual que mostra:
+- 🟢 **Verde:** Seguro (Fator R adequado)
+- 🟡 **Amarelo:** Atenção ao Fator R
+- 🔴 **Vermelho:** Risco fiscal / Perdendo dinheiro
+
+### 2. **Simulador What-If**
+Barra deslizante onde o contador altera o valor do Pró-labore e vê o impacto no lucro líquido final **em tempo real**.
+
+### 3. **Botão de Pânico do Fator R**
+Monitor que analisa os últimos 12 meses e alerta:
+> "Se você não aumentar sua folha em R$ 500 este mês, seus impostos vão subir 15% em 2026"
+
+### 4. **Calculadora de Break-even**
+Calcula se vale mais pagar Pró-labore (com IR e INSS) ou Dividendos (com a nova taxa).
+
+---
+
+## 🛠️ Tecnologias
+
+- **Next.js 14** (App Router)
+- **TypeScript** (Type Safety)
+- **Tailwind CSS** (Estilização moderna)
+- **React Hooks** (Estado e lógica reutilizável)
+
+---
+
+## �️ Rotas Disponíveis
+
+Após rodar `npm run dev`, acesse:
+
+- **/** - Página inicial
+- **/dashboard** - Visão geral da empresa com Semáforo de Risco
+- **/simulador** - Simulador What-If (slider de Pró-labore)
+- **/otimizador** - 💎 **A Equação de Ouro** (análise completa de cenários)
+
+---
+
+## �📊 Engine Tributário
+
+O coração do SimpliTax está no módulo `/src/engine/`:
+
+- **regras2026.ts:** Codifica todas as alíquotas da Reforma Tributária
+- **calculador.ts:** Algoritmos de otimização fiscal
+- **factorR.ts:** Monitoramento inteligente do Fator R
+
+Todas as funções são **puras** para garantir cálculos instantâneos.
+
+---
+
+## 🎨 Design System
+
+Cores que transmitem **confiança** e **profissionalismo**:
+
+- **Azul Simpli:** Tons de azul para ações principais
+- **Verde Sucesso:** Para indicadores positivos
+- **Amarelo Atenção:** Para alertas moderados
+- **Vermelho Crítico:** Para riscos fiscais
+
+---
+
+## 📝 Próximos Passos
+
+- [ ] Implementar upload de planilhas (CSV/XLSX)
+- [ ] Auto-mapper inteligente de colunas
+- [ ] Módulo de conciliação contábil
+- [ ] Geração de relatórios em PDF
+- [ ] Modo "Simulação de Reforma" (testar com dados de 2025)
+
+---
+
+## 🤝 Contribuindo
+
+Este projeto segue o **Master Plan** detalhado em [.github/copilot-instructions.md](./.github/copilot-instructions.md).
+
+Para contribuir:
+1. Leia o Master Plan
+2. Crie uma branch para sua feature
+3. Use prompts do VibeCoding Guide
+4. Abra um Pull Request
+
+---
+
+## 📄 Licença
+
+Propriedade de SimpliTax - Todos os direitos reservados.
+
+---
+
+**Desenvolvido com 💙 por LMartins (Product Manager)**
