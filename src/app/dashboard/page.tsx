@@ -10,6 +10,9 @@ import { analisarSaudeFiscal, botaoDePanico } from '@/engine/saudeFiscal'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import Footer from '@/components/Footer'
+import { AdBanner, useInterstitialAd, useAppOpenAd } from '@/components/ads/AdManager'
+import { UpgradeButton } from '@/components/Paywall'
+import { useSubscription, trackUsage, hasReachedLimit } from '@/utils/subscription'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -65,11 +68,30 @@ export default function DashboardPage() {
     setTimeout(() => setMensagemSalvo(false), 3000)
   }
 
+  // 📢 Sistema de anúncios e assinaturas
+  const { isPremium } = useSubscription()
+  const { showInterstitial } = useInterstitialAd()
+  useAppOpenAd() // Mostra anúncio ao abrir app (apenas 1x)
+
   const handleVerAnalise = () => {
     router.push('/otimizador')
   }
 
-  const handleGerarRelatorio = () => {
+  const handleGerarRelatorio = async () => {
+    // Verificar limite free
+    if (!isPremium && hasReachedLimit('report')) {
+      alert('🚨 Você atingiu o limite de 3 relatórios grátis este mês! Atualize para Premium.')
+      return
+    }
+
+    // Registrar uso
+    if (!isPremium) {
+      trackUsage('report')
+    }
+
+    // Mostrar anúncio (apenas para free)
+    await showInterstitial()
+
     router.push('/relatorio-alivio')
   }
 
@@ -302,6 +324,16 @@ export default function DashboardPage() {
           ))}
         </div>
 
+        {/* Botão de Upgrade Premium (apenas para free) */}
+        {!isPremium && (
+          <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+            <p className="text-sm text-gray-600 mb-3">
+              💡 <strong>Dica:</strong> Usuários Premium tem acesso ilimitado e sem anúncios!
+            </p>
+            <UpgradeButton className="w-full md:w-auto" />
+          </div>
+        )}
+
         <div className="mt-6 flex flex-wrap gap-3">
           <Button variant="primary" onClick={handleVerAnalise}>
             Ver Análise Completa
@@ -314,9 +346,12 @@ export default function DashboardPage() {
           </Button>
         </div>
       </Card>
+      </div>
+
+      {/* Banner de anúncio fixo (apenas para free users) */}
+      <AdBanner />
 
       <Footer />
-    </div>
     </>
   )
 }

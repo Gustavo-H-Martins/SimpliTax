@@ -10,6 +10,9 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import Footer from '@/components/Footer'
 import { FileDown } from 'lucide-react'
+import { AdBanner, useInterstitialAd } from '@/components/ads/AdManager'
+import { useSubscription, trackUsage, hasReachedLimit } from '@/utils/subscription'
+import { Paywall } from '@/components/Paywall'
 
 export default function OtimizadorPage() {
   const router = useRouter()
@@ -21,6 +24,11 @@ export default function OtimizadorPage() {
   })
   
   const [resultado, setResultado] = useState<ResultadoOtimizacao | null>(null)
+  const [showPaywall, setShowPaywall] = useState(false)
+
+  // 📢 Sistema de anúncios
+  const { isPremium } = useSubscription()
+  const { showInterstitial } = useInterstitialAd()
 
   // 🔄 Carregar dados do localStorage (vindos do Dashboard ou Upload)
   useEffect(() => {
@@ -50,13 +58,38 @@ export default function OtimizadorPage() {
     }
   }, [])
 
-  const handleCalcular = () => {
+  const handleCalcular = async () => {
+    // Verificar limite free
+    if (!isPremium && hasReachedLimit('calculation')) {
+      setShowPaywall(true)
+      return
+    }
+
+    // Registrar uso
+    if (!isPremium) {
+      trackUsage('calculation')
+    }
+
     const res = calcularOtimizacao(dados)
     setResultado(res)
+
+    // Mostrar anúncio após calcular (apenas free)
+    await showInterstitial()
   }
 
   const handleExportarPDF = async () => {
     if (!resultado) return
+
+    // Verificar limite free
+    if (!isPremium && hasReachedLimit('pdfExport')) {
+      setShowPaywall(true)
+      return
+    }
+
+    // Registrar uso
+    if (!isPremium) {
+      trackUsage('pdfExport')
+    }
     
     try {
       await exportarParaPDF(resultado, {
@@ -64,6 +97,9 @@ export default function OtimizadorPage() {
         nomeContador: 'Contador SimpliTax'
       })
       alert('✅ PDF gerado com sucesso!')
+
+      // Mostrar anúncio após gerar PDF (apenas free)
+      await showInterstitial()
     } catch (error) {
       console.error('Erro ao gerar PDF:', error)
       alert('❌ Erro ao gerar PDF. Tente novamente.')
@@ -278,19 +314,29 @@ export default function OtimizadorPage() {
               <ol className="space-y-3">
                 {resultado.acoes.map((acao, index) => (
                   <li key={index} className="flex items-start">
-                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500 text-white text-sm font-bold mr-3 flex-shrink-0">
-                    {index + 1}
-                  </span>
-                  <span className="text-gray-700">{acao}</span>
-                </li>
-              ))}
-            </ol>
-          </Card>
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-500 text-white text-sm font-bold mr-3 flex-shrink-0">
+                      {index + 1}
+                    </span>
+                    <span className="text-gray-700">{acao}</span>
+                  </li>
+                ))}
+              </ol>
+            </Card>
           </>
           )}
         </div>
       )}
       
+      {/* Banner de anúncio fixo */}
+      <AdBanner />
+
+      {/* Paywall modal */}
+      <Paywall
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        trigger="limit"
+      />
+
       <Footer />
     </div>
     </>
