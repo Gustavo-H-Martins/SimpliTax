@@ -1,15 +1,33 @@
 {
-  "name": "simplitax-2026",
-  "version": "0.1.0",
+  "name": "simpletax2026",
+  "version": "1.0.0",
+  "description": "Economia inteligente para MEI, ME e autônomos com a Reforma Tributária 2026",
+  "author": "LM Tech Solutions",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/SimpliTax"
+  },
+  "keywords": [
+    "tributario",
+    "mei",
+    "simples-nacional",
+    "fator-r",
+    "reforma-tributaria-2026",
+    "contador-digital"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "export": "next build && next export",
     "go": "node start.js --dev",
     "go:prod": "node start.js",
-    "setup": "node start.js --install"
+    "setup": "node start.js --install",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel"
   },
   "dependencies": {
     "axios": "^1.6.2",

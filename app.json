@@ -1,0 +1,86 @@
+{
+  "name": "SimpleTax2026",
+  "displayName": "SimpleTax 2026",
+  "description": "Economia inteligente para MEI, ME e autônomos com a Reforma Tributária 2026. Calcule o melhor cenário fiscal e pague menos impostos legalmente.",
+  "version": "1.0.0",
+  "author": "LM Tech Solutions",
+  "license": "MIT",
+  "keywords": [
+    "tributário",
+    "mei",
+    "microempresa",
+    "autônomo",
+    "simples nacional",
+    "fator r",
+    "dividendos",
+    "reforma tributária 2026",
+    "economia fiscal",
+    "contador digital"
+  ],
+  "categories": [
+    "Finanças",
+    "Negócios",
+    "Produtividade"
+  ],
+  "android": {
+    "package": "com.lmtech.simpletax2026",
+    "versionCode": 1,
+    "minSdkVersion": 23,
+    "targetSdkVersion": 34,
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE"
+    ],
+    "icon": "./assets/icon.png",
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#0F172A"
+    },
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0F172A"
+    }
+  },
+  "monetization": {
+    "admob": {
+      "appId": {
+        "android": "ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY"
+      },
+      "bannerAdUnitId": {
+        "android": "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB"
+      },
+      "interstitialAdUnitId": {
+        "android": "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"
+      }
+    },
+    "revenuecat": {
+      "apiKey": {
+        "android": "seu_api_key_android_aqui"
+      },
+      "productIds": {
+        "mensal": "simpletax2026_premium_mensal",
+        "anual": "simpletax2026_premium_anual",
+        "vitalicio": "simpletax2026_premium_lifetime"
+      }
+    }
+  },
+  "pricing": {
+    "mensal": {
+      "price": "R$ 29,90",
+      "trial": 7,
+      "description": "Acesso completo sem anúncios por 1 mês"
+    },
+    "anual": {
+      "price": "R$ 299,00",
+      "pricePerMonth": "R$ 24,92",
+      "discount": "17%",
+      "trial": 14,
+      "description": "Economize 17% com o plano anual"
+    },
+    "vitalicio": {
+      "price": "R$ 997,00",
+      "description": "Pagamento único, acesso para sempre"
+    }
+  }
+}
