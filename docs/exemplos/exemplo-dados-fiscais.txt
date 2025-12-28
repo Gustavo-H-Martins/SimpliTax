@@ -1,0 +1,10 @@
+Receita Bruta: 100000
+Despesas Operacionais: 30000
+Folha Pagamento: 15000
+Pró-labore: 5000
+Simples Nacional: 6000
+
+Notas:
+- Valores mensais em reais
+- Folha inclui apenas funcionários CLT
+- Pró-labore é separado da folha para cálculo do Fator R

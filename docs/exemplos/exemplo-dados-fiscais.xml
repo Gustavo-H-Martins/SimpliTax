@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DadosFiscais>
+  <Empresa>
+    <Nome>Empresa Exemplo Ltda</Nome>
+    <CNPJ>12.345.678/0001-99</CNPJ>
+  </Empresa>
+  <DadosMensais periodo="2025-12">
+    <ReceitaBruta>100000</ReceitaBruta>
+    <DespesasOperacionais>30000</DespesasOperacionais>
+    <FolhaPagamento>15000</FolhaPagamento>
+    <ProLabore>5000</ProLabore>
+    <SimplesNacional>6000</SimplesNacional>
+  </DadosMensais>
+  <Observacoes>
+    <Item>Valores em reais (R$)</Item>
+    <Item>Folha refere-se apenas a funcionários CLT</Item>
+    <Item>Pró-labore calculado separadamente para Fator R</Item>
+  </Observacoes>
+</DadosFiscais>
