@@ -30,6 +30,9 @@
     "deploy:preview": "vercel"
   },
   "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
     "axios": "^1.6.2",
     "crypto-js": "^4.2.0",
     "html2canvas": "^1.4.1",
